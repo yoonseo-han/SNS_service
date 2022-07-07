@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/main.css">
+    <title>{{title}}</title>
+</head>
+<body>
+    <div class="container">
+        <div class="profile-wrap">
+            <div class="profile">
+                {% if user and user.id %}
+                    <div class="user-name">{{'Hello '+user.nick }}</div>
+                    <div class="half">
+                        <div>Follower</div>
+                        <div class="count follower-count">{{followerCount}}</div>
+                    </div>
+                <input type="hidden" id="my-id" value="{{user.id}}">
+                <a href="/profile" id="my-profile" class="btn">My Profile</a>
+                <a href="/auth/logout" id="logout" class="btn">Log out</a>
+                {% else %}
+                    <form action="/atu/login" id="login-form" method="post">
+                        <div class="input-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" required autofocus>
+                        </div>
+                        <div class="input-group">
+                            <label for="password">Password</label>
+                            <input type="password" id="password" name="password" required>
+                        </div>
+                        <a href="/join" id="join" class="btn">Sign in</a>
+                        <button id="login" type="submit" class="btn">Log in</button>
+                        <a href="/auth/kakao" class="btn" id="kakao">Kakaotalk</a>
+                    </form>
+                {% endif %}
+            </div>
+            <footer>
+                Made by &nbsp;
+                <a href="" target="_blank">Yoonseo Han</a>
+            </footer>
+        </div>
+        {% block content %}
+        {% endblock %}
+    </div>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+        window.onload = () => {
+            if(new URL(location.href).searchParams.get('loginError')) {
+                alert(new URL (location.href).searchParams.get('loginError'));
+            }
+        }
+    </script>
+    {% block script %}
+    {% endblock %}
+</body>
+</html>
