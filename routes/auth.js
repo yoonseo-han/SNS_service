@@ -37,7 +37,7 @@ router.post('/join', isNotLoggedIn, async(req, res, next) => {
 //Log in router
 router.post('/login', isNotLoggedIn, (req, res, next) => {
     //Consists of a middleware to deal with login function
-    //Add middleware inside middleware to addn7sernf7hct89h
+    //Add middleware inside middleware to add
     passport.authenticate('local', (authError, user, info) => {
         //if authError exist: method is failed
         if(authError) {
@@ -55,6 +55,7 @@ router.post('/login', isNotLoggedIn, (req, res, next) => {
                 console.error(loginError);
                 return next(loginError);
             }
+            //Redirect to main page
             return res.redirect('/');
         });
     }) (req, res, next); //Middleware inside a middleware consists of (req, res, next)
@@ -69,5 +70,15 @@ router.get('/logout', isLoggedIn, (req, res) => {
     //Return to main page
     res.redirect('/');
 });
+
+//Kakao login router
+router.get('/kakao', passport.authenticate('kakao'));
+
+//Get login status result
+router.get('/kakao/callback', passport.authenticate('kakao', {
+    failureRedirect: '/',
+}), (req,res) => {
+    res.redirect('/');
+}); 
 
 module.exports = router;

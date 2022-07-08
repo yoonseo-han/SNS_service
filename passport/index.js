@@ -5,11 +5,14 @@ const User = require('../models/user');
 
 module.exports = () => {
     passport.serializeUser((user, done) => {
+        //Decide which information to store in req.session
         done(null, user.id);
     });
 
     passport.deserializeUser((id, done) => {
+        //Find user based on session id
         User.findOne({where: {id}})
+            //Save user info into req.user
             .then(user => done(null, user))
             .catch(err => done(err));
     });
