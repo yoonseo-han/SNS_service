@@ -11,7 +11,18 @@ module.exports = () => {
 
     passport.deserializeUser((id, done) => {
         //Find user based on session id
-        User.findOne({where: {id}})
+        User.findOne({
+            where: {id},
+            include: [{
+                model: User,
+                attributes: ['id', 'nick'],
+                as: 'Followers',
+            }, {
+                model: User,
+                attributes: ['id', 'nick'],
+                as:'Followings',
+            }],
+        })
             //Save user info into req.user
             .then(user => done(null, user))
             .catch(err => done(err));
